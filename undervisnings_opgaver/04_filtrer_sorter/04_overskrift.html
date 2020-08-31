@@ -54,6 +54,22 @@
             border-radius: 0px 0px 10px 10px;
         }
 
+        #knapper button {
+            margin: 10px;
+            padding: 30px;
+            cursor: pointer;
+        }
+
+        #knapper button:hover {
+            background-color: aquamarine;
+        }
+
+        .valgt {
+            background-color: aquamarine;
+
+
+        }
+
     </style>
 </head>
 
@@ -65,12 +81,14 @@
 
 <body>
 
-    <div id="knapper">
+    <header id="knapper">
+        <h1></h1>
         <button class="filter valgt" data-køn="alle">Alle</button>
         <button class="filter" data-køn="m">Mænd</button>
         <button class="filter" data-køn="k">Kvinder</button>
         <button class="filter" data-køn="andet">Andet</button>
-    </div>
+    </header>
+
 
 
     <section>
@@ -90,6 +108,8 @@
             </article>
         </template>
     </section>
+
+
 
     <script>
         const fil = "dyrIJSON.json";
@@ -137,6 +157,11 @@
 
         function filterBTNs() {
             filter = this.dataset.køn;
+            document.querySelector("h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach((btn) => {
+                btn.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
             vis();
         }
 
