@@ -10,8 +10,40 @@
 
 
 
+<header>
+    <section class="background">
+        <div id="babush">
+            <img src="imgs/large/rocky.png" alt="img">
+        </div>
+        <div id="overskrift">Bistro Babushka</div>
+    </section>
+</header>
+
+
+
+<nav>
+    <button class="filter valgt" data-kategori="alle">Alle</button>
+    <button class="filter" data-kategori="forretter">Forretter</button>
+    <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+    <button class="filter" data-kategori="desserter">Desserter</button>
+    <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
+</nav>
+
+
+
 
 <body>
+    <h1>Alle</h1>
+
+    <template>
+        <article class="grid">
+            <h2></h2>
+            <img src="" alt="">
+            <p class="github"></p>
+            <p class="alder">kr</p>
+        </article>
+    </template>
+
     <div id="popup">
         <article class="enkeltPerson">
             <button class="luk">X</button>
@@ -21,67 +53,52 @@
         </article>
     </div>
 
-    <header>
-        <section class="background">
-            <div id="babush">
-                <img src="imgs/large/rocky.png" alt="img">
-            </div>
-            <div id="overskrift">Bistro Babushka</div>
-        </section>
+    <section class="personliste"></section>
 
-        <nav>
-            <button class="filter valgt" data-kategori="alle">Alle</button>
-            <button class="filter" data-kategori="forretter">Forretter</button>
-            <button class="filter" data-kategori="hovedretter">Hovedretter</button>
-            <button class="filter" data-kategori="desserter">Desserter</button>
-            <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
-        </nav>
-    </header>
+    <footer id="kontakt">
+        <p>
+            Bistro Babushka<br>
+            Adresse <br>
+            Tlf.<br>
+        </p>
+    </footer>
 
-    <main>
-        <h1>Alle</h1>
 
-        <template>
-            <article class="grid">
-                <h2></h2>
-                <img src="" alt="">
-                <p class="github"></p>
-                <p class="alder">kr</p>
-            </article>
-        </template>
 
-        <section class="personliste"></section>
-
-        <footer id="kontakt">
-            <p>Bistro Babushka <br>
-                Adresse <br>
-                Tlf. nr. <br>
-        </footer>
-    </main>
+    <!--Jeg har ikke kunne lave alt i js fra schratch selv, så har fundet en udgave fra sidste års studerende. (Jeg lærer uden tvivl bedst hvis jeg har et eksempel på en løsning - så jeg kan gennemgå og forstå) Jeg har herefter skrevet alt ned i mine noter (fagbegreber og koder) som jeg endnu ikke havde forstået. Det meste af min energi og tid har gået på at forstå det nedskrevne, før jeg kunne lave alt det her uden hjælp. Jeg har undervejs ændret i understående, så det gav mere mening for mig. Dog er der stadig ting som jeg mangler at lærer, og som jeg mener kunne laves mere effektivt, og anderledes for den sags skyld, ud fra den viden jeg har erhvervet i undervisningen.
+Jeg kommer højest sandsynligt til at kode om i denne opgave på et senere tidspunkt, når jeg har fået en bedre forståelse for det.-->
 
     <script>
         document.addEventListener("DOMContentLoaded", getjson);
+
         const modtagerKloner = document.querySelector(".personliste");
         const temp = document.querySelector("template");
         let personer;
         let filter = "alle";
 
         async function getjson() {
-            console.log("jsondata", jsondata);
+
             let jsondata = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+
+            console.log("jsondata", jsondata);
             minJson = await jsondata.json();
             visJson();
             addEventListenersToButtons();
+
         }
 
         function visJson() {
+
             modtagerKloner.innerHTML = "";
+
             minJson.feed.entry.forEach((person) => {
+
                 if (filter == "alle" || filter == person.gsx$kategori.$t) {
                     const klon = temp.cloneNode(true).content;
                     klon.querySelector("h2").textContent = person.gsx$navn.$t;
                     klon.querySelector(".github").textContent = person.gsx$kort.$t;;
                     klon.querySelector("img").src = "imgs/small/" + person.gsx$billede.$t + "-sm.jpg";
+
                     klon.querySelector(".alder").textContent += person.gsx$pris.$t;
                     modtagerKloner.appendChild(klon);
                     modtagerKloner.lastElementChild.addEventListener("click", () => {
